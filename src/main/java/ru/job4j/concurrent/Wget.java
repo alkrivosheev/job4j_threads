@@ -43,9 +43,7 @@ public class Wget implements Runnable {
                     totalBytesRead = 0;
                 }
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
+        } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
         try {
