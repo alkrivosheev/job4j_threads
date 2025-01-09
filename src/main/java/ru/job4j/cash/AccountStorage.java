@@ -39,16 +39,16 @@ public class AccountStorage {
         accounts.get(id);
     }
 
-    public boolean transfer(int fromId, int toId, int amount) {
+    public synchronized boolean transfer(int fromId, int toId, int amount) {
         boolean result = false;
         try {
             Account fromAccount = accounts.get(fromId);
             Account toAccount = accounts.get(toId);
-            if (fromAccount != null && toAccount != null && fromAccount.amount() >= amount) {
+            if (fromAccount != null && toAccount != null && fromAccount.amount() >= amount && amount >= 0) {
                 update(new Account(fromId, fromAccount.amount() - amount));
                 update(new Account(toId, toAccount.amount() + amount));
+                result = true;
             }
-            result = true;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
