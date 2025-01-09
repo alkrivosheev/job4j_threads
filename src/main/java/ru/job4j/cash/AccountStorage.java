@@ -7,18 +7,13 @@ public class AccountStorage {
     private final HashMap<Integer, Account> accounts = new HashMap<>();
 
     public synchronized boolean add(Account account) {
-        boolean result = false;
-        try {
-            accounts.put(account.id(), account);
-            result = true;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        return result;
+            accounts.putIfAbsent(account.id(), account);
+            return true;
     }
 
     public synchronized boolean update(Account account) {
-        return add(account);
+        accounts.replace(account.id(), account);
+        return true;
     }
 
     public synchronized void delete(int id) {
@@ -26,31 +21,21 @@ public class AccountStorage {
     }
 
     public synchronized Optional<Account> getById(int id) {
-        Optional<Account> result;
-        try {
-            result = Optional.ofNullable(accounts.get(id));
-        } catch (Exception e) {
-            throw new RuntimeException("Not found account by id = " + id);
-        }
-        return result;
+            return Optional.ofNullable(accounts.get(id));
     }
 
     private synchronized void extracted(int id) {
         accounts.get(id);
     }
 
-    public boolean transfer(int fromId, int toId, int amount) {
+    public synchronized boolean transfer(int fromId, int toId, int amount) {
         boolean result = false;
-        try {
-            Account fromAccount = accounts.get(fromId);
-            Account toAccount = accounts.get(toId);
-            if (fromAccount != null && toAccount != null && fromAccount.amount() >= amount) {
-                update(new Account(fromId, fromAccount.amount() - amount));
-                update(new Account(toId, toAccount.amount() + amount));
-            }
+        Account fromAccount = accounts.get(fromId);
+        Account toAccount = accounts.get(toId);
+        if (fromAccount != null && toAccount != null && fromAccount.amount() >= amount && amount >= 0) {
+            update(new Account(fromId, fromAccount.amount() - amount));
+            update(new Account(toId, toAccount.amount() + amount));
             result = true;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         }
         return result;
     }

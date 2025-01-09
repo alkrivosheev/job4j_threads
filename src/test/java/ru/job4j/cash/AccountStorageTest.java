@@ -45,4 +45,50 @@ class AccountStorageTest {
         assertThat(firstAccount.amount()).isEqualTo(0);
         assertThat(secondAccount.amount()).isEqualTo(200);
     }
+
+    @Test
+    void whenTransferWithInsufficientFunds() {
+        var storage = new AccountStorage();
+        storage.add(new Account(1, 50));
+        storage.add(new Account(2, 100));
+        boolean result = storage.transfer(1, 2, 100);
+        assertThat(result).isFalse();
+        var firstAccount = storage.getById(1)
+                .orElseThrow(() -> new IllegalStateException("Not found account by id = 1"));
+        var secondAccount = storage.getById(2)
+                .orElseThrow(() -> new IllegalStateException("Not found account by id = 2"));
+        assertThat(firstAccount.amount()).isEqualTo(50);
+        assertThat(secondAccount.amount()).isEqualTo(100);
+    }
+
+    @Test
+    void whenTransferZeroAmount() {
+        var storage = new AccountStorage();
+        storage.add(new Account(1, 100));
+        storage.add(new Account(2, 100));
+        boolean result = storage.transfer(1, 2, 0);
+        assertThat(result).isTrue();
+        var firstAccount = storage.getById(1)
+                .orElseThrow(() -> new IllegalStateException("Not found account by id = 1"));
+        var secondAccount = storage.getById(2)
+                .orElseThrow(() -> new IllegalStateException("Not found account by id = 2"));
+        assertThat(firstAccount.amount()).isEqualTo(100);
+        assertThat(secondAccount.amount()).isEqualTo(100);
+    }
+
+    @Test
+    void whenTransferNegativeAmount() {
+        var storage = new AccountStorage();
+        storage.add(new Account(1, 100));
+        storage.add(new Account(2, 100));
+        boolean result = storage.transfer(1, 2, -50);
+        assertThat(result).isFalse();
+        var firstAccount = storage.getById(1)
+                .orElseThrow(() -> new IllegalStateException("Not found account by id = 1"));
+        var secondAccount = storage.getById(2)
+                .orElseThrow(() -> new IllegalStateException("Not found account by id = 2"));
+        assertThat(firstAccount.amount()).isEqualTo(100);
+        assertThat(secondAccount.amount()).isEqualTo(100);
+    }
+
 }
