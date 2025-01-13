@@ -7,17 +7,11 @@ public class AccountStorage {
     private final HashMap<Integer, Account> accounts = new HashMap<>();
 
     public synchronized boolean add(Account account) {
-            if (accounts.putIfAbsent(account.id(), account) == null) {
-                return true;
-            }
-            return false;
+        return accounts.putIfAbsent(account.id(), account) == null;
     }
 
     public synchronized boolean update(Account account) {
-        if (accounts.replace(account.id(), account) != null) {
-            return true;
-        }
-        return false;
+        return accounts.replace(account.id(), account) != null;
     }
 
     public synchronized void delete(int id) {
