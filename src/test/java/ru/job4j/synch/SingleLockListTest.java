@@ -1,8 +1,10 @@
 package ru.job4j.synch;
 
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -15,7 +17,7 @@ public class SingleLockListTest {
         var init = new ArrayList<Integer>();
         SingleLockList<Integer> list = new SingleLockList<>(init);
         list.add(1);
-        var it = list.iterator();
+        Iterator<Integer> it = list.iterator();
         list.add(2);
         assertThat(it.next()).isEqualTo(1);
     }
