@@ -1,4 +1,4 @@
-package ru.job4j.simpleblockingqueue;
+package ru.job4j.buffer;
 
 import org.junit.Test;
 import static org.junit.Assert.*;

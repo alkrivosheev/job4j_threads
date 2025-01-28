@@ -1,4 +1,4 @@
-package ru.job4j.simpleblockingqueue;
+package ru.job4j.buffer;
 
 public class Producer implements Runnable {
     private final SimpleBlockingQueue<Integer> queue;
