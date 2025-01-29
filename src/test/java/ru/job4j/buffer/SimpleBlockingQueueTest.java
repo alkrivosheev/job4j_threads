@@ -99,9 +99,14 @@ public class SimpleBlockingQueueTest {
         final SimpleBlockingQueue<Integer> queue = new SimpleBlockingQueue<>(6);
         Thread producer = new Thread(
                 () -> {
-                    IntStream.range(0, 5).forEach(
-                            queue :: safeOffer
-                    );
+                    IntStream.range(0, 5).forEach(value -> {
+                        try {
+                            queue.offer(value);
+                        } catch (InterruptedException e) {
+                            Thread.currentThread().interrupt();
+                            throw new RuntimeException(e);
+                        }
+                    });
                 }
         );
         producer.start();
@@ -130,7 +135,14 @@ public class SimpleBlockingQueueTest {
         final SimpleBlockingQueue<Integer> queue = new SimpleBlockingQueue<>(10);
         Thread producer = new Thread(
                 () -> {
-                    IntStream.range(0, 8).forEach(queue::safeOffer);
+                    IntStream.range(0, 8).forEach(value -> {
+                        try {
+                            queue.offer(value);
+                        } catch (InterruptedException e) {
+                            Thread.currentThread().interrupt();
+                            throw new RuntimeException(e);
+                        }
+                    });
                 }
         );
         Thread consumer = new Thread(

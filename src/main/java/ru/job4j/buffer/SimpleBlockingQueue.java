@@ -24,15 +24,6 @@ public class SimpleBlockingQueue<T> {
         notifyAll();
     }
 
-    public synchronized void safeOffer(T value) {
-            try {
-                offer(value);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-                throw new RuntimeException(e);
-            }
-    }
-
     public synchronized T poll() throws InterruptedException {
         while (queue.isEmpty()) {
             wait();
