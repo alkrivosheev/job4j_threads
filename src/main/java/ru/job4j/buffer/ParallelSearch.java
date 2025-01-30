@@ -4,17 +4,15 @@ public class ParallelSearch {
     public static void main(String[] args) {
     SimpleBlockingQueue<Integer> queue = new SimpleBlockingQueue<Integer>(3);
     final Thread consumer = new Thread(() -> {
-        while (true) {
-            try {
-                Integer item = queue.poll();
-                if (item == null) {
-                    break;
-                }
+        try {
+            Integer item = queue.poll();
+            do {
                 System.out.println(item);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-                Thread.currentThread().interrupt();
-            }
+                item = queue.poll();
+            } while (item != null);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            Thread.currentThread().interrupt();
         }
     });
         consumer.start();
