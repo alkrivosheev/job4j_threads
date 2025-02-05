@@ -32,10 +32,7 @@ public class Cache {
                     }
             ) != null;
         } catch (RuntimeException e) {
-            if (e.getCause() instanceof OptimisticException) {
-                throw (OptimisticException) e.getCause();
-            }
-            throw e;
+            throw (OptimisticException) e.getCause();
         }
     }
 
