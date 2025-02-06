@@ -14,26 +14,19 @@ public class Cache {
     }
 
     public boolean update(Base model) throws OptimisticException {
-        try {
             return memory.computeIfPresent(
                     model.id(),
                     (key, existing) -> {
                         if (existing.version() != model.version()) {
-                            throw new RuntimeException(
-                                    new OptimisticException("Version mismatch")
-                            );
+                            throw new OptimisticException("Version mismatch");
                         }
                         return new Base(
                                 existing.id(),
                                 model.name(),
                                 existing.version() + 1
-
                         );
                     }
             ) != null;
-        } catch (RuntimeException e) {
-            throw (OptimisticException) e.getCause();
-        }
     }
 
     public void delete(int id) {
