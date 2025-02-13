@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import java.util.concurrent.ForkJoinPool;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static ru.job4j.pools.ParallelSearch.parallelSearch;
 
 class ParallelSearchTest {
     @Test
@@ -12,9 +13,7 @@ class ParallelSearchTest {
         Integer[] array = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
         int target = 7;
         int expectedIndex = 6;
-        ParallelSearch parallelSearch = new ParallelSearch(array, target, 0, array.length - 1);
-        ForkJoinPool forkJoinPool = new ForkJoinPool();
-        int result = (int) forkJoinPool.invoke(parallelSearch);
+        int result = parallelSearch(array, target);
         assertEquals(expectedIndex, result);
     }
 
@@ -23,9 +22,7 @@ class ParallelSearchTest {
         String[] array = {"apples", "task", "cherry", "date", "EVE"};
         String target = "cherry";
         int expectedIndex = 2;
-        ParallelSearch parallelSearch = new ParallelSearch(array, target, 0, array.length - 1);
-        ForkJoinPool forkJoinPool = new ForkJoinPool();
-        int result = (int) forkJoinPool.invoke(parallelSearch);
+        int result = parallelSearch(array, target);
         assertEquals(expectedIndex, result);
     }
 
@@ -34,9 +31,7 @@ class ParallelSearchTest {
         Integer[] array = {5, 3, 8, 1};
         int target = 3;
         int expectedIndex = 1;
-        ParallelSearch parallelSearch = new ParallelSearch(array, target, 0, array.length - 1);
-        ForkJoinPool forkJoinPool = new ForkJoinPool();
-        int result = (int) forkJoinPool.invoke(parallelSearch);
+        int result = parallelSearch(array, target);
         assertEquals(expectedIndex, result);
     }
 
@@ -48,9 +43,7 @@ class ParallelSearchTest {
         }
         int target = 50;
         int expectedIndex = 49;
-        ParallelSearch parallelSearch = new ParallelSearch(array, target, 0, array.length - 1);
-        ForkJoinPool forkJoinPool = new ForkJoinPool();
-        int result = (int) forkJoinPool.invoke(parallelSearch);
+        int result = parallelSearch(array, target);
         assertEquals(expectedIndex, result);
     }
 
@@ -59,9 +52,7 @@ class ParallelSearchTest {
         Integer[] array = {1, 2, 3, 4, 5};
         int target = 10;
         int expectedIndex = -1;
-        ParallelSearch parallelSearch = new ParallelSearch(array, target, 0, array.length - 1);
-        ForkJoinPool forkJoinPool = new ForkJoinPool();
-        int result = (int) forkJoinPool.invoke(parallelSearch);
+        int result = parallelSearch(array, target);
         assertEquals(expectedIndex, result);
     }
 
@@ -70,9 +61,7 @@ class ParallelSearchTest {
         Integer[] array = {};
         int target = 5;
         int expectedIndex = -1;
-        ParallelSearch parallelSearch = new ParallelSearch(array, target, 0, array.length - 1);
-        ForkJoinPool forkJoinPool = new ForkJoinPool();
-        int result = (int) forkJoinPool.invoke(parallelSearch);
+        int result = parallelSearch(array, target);
         assertEquals(expectedIndex, result);
     }
 }
